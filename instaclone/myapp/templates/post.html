@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    POST HERE
+<form method="POST" action="/like">
+    {% csrf_token %}
+    <input type="hidden" name="post" value="{{ post.id }}">
+    <input type="submit" class="btn btn-default" value="Like">
+</form>
+</body>
+</html>
