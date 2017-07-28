@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from forms import SignUpForm, LoginForm, PostForm, LikeForm, CommentForm
-from models import UserModel, SessionToken, PostModel, LikeModel, CommentModel
+from models import UserModel, SessionToken, PostModel, LikeModel, CommentModel, Post_Like
 from django.contrib.auth.hashers import make_password, check_password
 from datetime import timedelta
 from django.utils import timezone
@@ -69,7 +69,7 @@ def post_view(request):
                 post = PostModel(user=user, image=image, caption=caption)
                 post.save()
 
-                path = str(BASE_DIR + post.image.url)
+                path = str(BASE_DIR + '/' + post.image.url)
 
                 client = ImgurClient('7a6b6f3c625804c', 'e8737b3a742e79b4ef2ee548d556b05893771eb0')
                 post.image_url = client.upload_from_path(path, anon=True)['link']
@@ -107,7 +107,7 @@ def like_view(request):
         form = LikeForm(request.POST)
         if form.is_valid():
             post_id = form.cleaned_data.get('post').id
-            existing_like = PostLike.objects.filter(post_id=post_id, user=user).first()
+            existing_like = Post_Like.objects.filter(post_id=post_id, user=user).first()
             if not existing_like:
                 LikeModel.objects.create(post_id=post_id, user=user)
             else:
